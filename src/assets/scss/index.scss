@@ -81,6 +81,14 @@ textarea {
   }
 }
 
+.save-button {
+  margin-left: var(--spacing-10);
+  padding: 0 var(--spacing-10);
+  line-height: 52px;
+  font-size: var(--font-size-large);
+  box-sizing: border-box;
+}
+
 .icon-button {
   @extend .button;
   border-radius: 100%;
@@ -128,12 +136,12 @@ textarea {
 .user-is-editing {
   display: flex;
   align-items: center;
-  position: absolute;
-  left: var(--spacing-20);
-  bottom: var(--spacing-20);
+
   background: purple;
   border-radius: var(--border-radius-small);
-  padding: var(--spacing-10) var(--spacing-10);
+  padding: 0 var(--spacing-10);
+  height: 55px;
+  box-sizing: border-box;
 
   .user-emoji {
     width: 36px;
@@ -154,6 +162,15 @@ textarea {
       margin-right: var(--spacing-10);
     }
   }
+}
+
+.editing-indication-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  left: var(--spacing-20);
+  bottom: var(--spacing-20);
 }
 
 .note {

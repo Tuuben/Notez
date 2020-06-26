@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, KeyboardEvent, useRef, useState } from 'react';
 import { NotesContext } from 'providers/NotesProvider';
 import { Note } from 'types/note';
 import { ReactComponent as ArrowUpSVG } from '../../assets/icons/arrow-up.svg';
@@ -25,8 +25,18 @@ export const NoteCard = ({
     NotesContext
   );
   const { user } = useContext(UserContext);
+  const [isFocused, setIsFocused] = useState(false);
 
   const svgSize = 36;
+
+  const onBlur = () => {
+    setNoteSelected(note, false);
+    setIsFocused(false);
+  };
+
+  const onFocus = () => {
+    setIsFocused(true);
+  };
 
   return (
     <div
@@ -36,21 +46,31 @@ export const NoteCard = ({
         borderColor: note.selected ? note.selected?.userColor : 'normal',
       }}
     >
-      {note.selected && note.selected.userEmoji && (
-        <div
-          className="user-is-editing"
-          style={{ background: note.selected?.userColor || 'normal' }}
-        >
-          <p className="user-emoji">{note.selected.userEmoji}</p>
-          <p> {note.selected.id === user?.id ? 'Editing ...' : 'Someone is editing ..'} </p>
-        </div>
-      )}
+      <div className="editing-indication-row">
+        {note.selected && note.selected.userEmoji && (
+          <div
+            className="user-is-editing"
+            style={{ background: note.selected?.userColor || 'normal' }}
+          >
+            <p className="user-emoji">{note.selected.userEmoji}</p>
+            <p> {note.selected.id === user?.id ? 'Editing ...' : 'Someone is editing ..'} </p>
+          </div>
+        )}
+        {isFocused && (
+          <div className="">
+            <button className="button save-button" onClick={() => setNoteSelected(note, false)}>
+              SAVE
+            </button>
+          </div>
+        )}
+      </div>
       <textarea
         value={note.content}
         name="content"
         onChange={(ev) => changeNoteContent(ev, note)}
         onClick={() => setNoteSelected(note, true)}
-        onBlur={() => setNoteSelected(note, false)}
+        onFocus={onFocus}
+        onBlur={onBlur}
       ></textarea>
       <div className="actions">
         <div className="move-card-actions">

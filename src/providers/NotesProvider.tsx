@@ -65,17 +65,6 @@ const NotesProvider = ({ children }: Props<any>) => {
     setMessageSub(subscription);
   }, [$onMessage]);
 
-  /*   useEffect(() => {
-    if (!webSocket) {
-      return;
-    }
-
-    console.log('RECONNECTING');
-    _pushLocalAddedCardsToWS();
-    _pushLocalDeletedCardsToWS();
-    _pushLocalUpdatedCardsToWS();
-  }, [webSocket]); */
-
   const _wsIsOpen = () => {
     return !!webSocket && webSocket.readyState === WebSocket.OPEN;
   };
@@ -116,7 +105,6 @@ const NotesProvider = ({ children }: Props<any>) => {
       setNotes([...currentNotes, payload]);
     }
 
-    //TODO REFCATOR FROM NOTE TO NOTE
     if (action === 'SERVER_DELETED_NOTE') {
       const currentNotes = notesRef.current || [];
       const updatedNotes = currentNotes.filter((c) => c.id !== payload.id);

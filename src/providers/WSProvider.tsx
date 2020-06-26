@@ -2,8 +2,10 @@ import React, { Props, useState, useEffect, createContext } from 'react';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { sendPayloadToServer, waitForSocketToBeOpen, WebSocketAction } from 'utils/ws';
+import { useOfflineMode } from 'hooks/useOfflineMode';
 
-const socketUrl = process.env.WS_URL || 'ws://localhost:8000';
+const socketUrl = 'wss://notez-backend.herokuapp.com/';
+//const socketUrl = 'ws://localhost:8000';
 
 export interface WebSocketData {
   action: WebSocketAction;
@@ -52,8 +54,11 @@ export const WSProvider = ({ children }: Props<any>) => {
       setWebSocket(new WebSocket(socketUrl));
     });
 
-    webSocket.addEventListener('close', () => {
-      console.log('Socket was closed.');
+    webSocket.addEventListener('close', (ev) => {
+      const { wasClean, code } = ev;
+      if (!wasClean || code === 106) {
+        setWebSocket(new WebSocket(socketUrl));
+      }
     });
 
     // ADD socket ping to reconnect
