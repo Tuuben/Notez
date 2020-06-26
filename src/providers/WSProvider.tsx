@@ -4,8 +4,8 @@ import { map } from 'rxjs/operators';
 import { sendPayloadToServer, waitForSocketToBeOpen, WebSocketAction } from 'utils/ws';
 import { useOfflineMode } from 'hooks/useOfflineMode';
 
-const socketUrl = 'wss://notez-backend.herokuapp.com/';
-//const socketUrl = 'ws://localhost:8000';
+//const socketUrl = 'wss://notez-backend.herokuapp.com/';
+const socketUrl = 'ws://localhost:8000';
 
 export interface WebSocketData {
   action: WebSocketAction;

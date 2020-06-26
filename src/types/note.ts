@@ -1,7 +1,7 @@
 import { AppUser } from './user';
 
 export interface Note {
-  id: number;
+  id: string;
   content?: string;
   location?: number;
   selected?: AppUser;

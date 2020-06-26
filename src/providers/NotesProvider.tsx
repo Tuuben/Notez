@@ -267,7 +267,7 @@ const NotesProvider = ({ children }: Props<any>) => {
   };
 
   const addNote = () => {
-    const tempId = Math.round(99999 * Math.random());
+    const id = new Date().getTime().toString();
 
     const sortedNotes = notes.sort((a, b) =>
       a.location && b.location && a.location <= b.location ? 1 : -1
@@ -278,7 +278,7 @@ const NotesProvider = ({ children }: Props<any>) => {
     const note: Note = {
       location,
       content: 'Write something clever...',
-      id: tempId,
+      id,
     };
 
     console.log('added note ', note);
