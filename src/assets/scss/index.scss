@@ -1,0 +1,235 @@
+@charset "UTF-8";
+
+:root {
+  --background-color: #120821;
+  --color-elevation: #221238;
+  --color-elevation-2: #42256b;
+  --color-elevation-3: #583787;
+  --color-font-primary: #ebebeb;
+
+  --border-radius-small: 0.33rem;
+  --border-radius: 0.66rem;
+
+  --spacing-10: 0.5rem;
+  --spacing-20: 1rem;
+  --spacing-30: 1.5rem;
+  --spacing-50: 4.2rem;
+
+  --font-size-normal: 1rem;
+  --font-size-large: 1.3rem;
+  --font-size-display: 2.8rem;
+
+  // --purple: #ff00bc #00fff3 #00ff43 #542cf3 #f32c63 #9d2cf3 #f36c2c;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  font-family: "Open Sans", sans-serif;
+  color: var(--color-font-primary);
+}
+
+input,
+textarea {
+  font-family: "Open Sans", sans-serif;
+  color: var(--color-font-primary);
+}
+
+.header {
+  margin-bottom: var(--spacing-50);
+  padding: 0 4px;
+}
+
+.display-1 {
+  font-size: var(--font-size-display);
+  font-weight: black;
+  text-transform: uppercase;
+  margin: 0;
+  margin-bottom: var(--spacing-10);
+  letter-spacing: 0.12rem;
+}
+
+.subtitle {
+  margin: 0;
+  font-weight: normal;
+  opacity: 0.84;
+}
+
+.button {
+  cursor: pointer;
+  background-color: var(--color-elevation-2);
+  border-radius: var(--border-radius-small);
+  color: var(--color-font-primary);
+  border: 0;
+  outline: 0;
+  padding: var(--spacing-10) var(--spacing-20);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.022rem;
+  border: 2px solid var(--color-elevation-2);
+  transition: background-color 200ms, border 200ms;
+
+  &:hover {
+    background-color: var(--color-elevation-3);
+    border: 2px solid var(--color-elevation-3);
+  }
+
+  &:focus {
+    border: 2px solid var(--color-elevation-3);
+  }
+}
+
+.icon-button {
+  @extend .button;
+  border-radius: 100%;
+  padding: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.offline-banner {
+  background: #ff5a08;
+  color: white;
+  font-weight: bold;
+  width: 100vw;
+  padding: 12px;
+  margin-bottom: 12px;
+  animation: animateIn 480ms forwards;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.navbar {
+  margin-bottom: var(--spacing-20);
+  padding: 0 4px;
+
+  button:not(:last-child) {
+    margin-right: var(--spacing-10);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  margin: var(--spacing-50) auto;
+}
+
+.user-is-editing {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: var(--spacing-20);
+  bottom: var(--spacing-20);
+  background: purple;
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-10) var(--spacing-10);
+
+  .user-emoji {
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  p {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-right: var(--spacing-10);
+    }
+  }
+}
+
+.note {
+  border: 4px solid var(--background-color);
+  transition: border 200ms;
+  box-sizing: border-box;
+  padding: var(--spacing-10);
+  background-color: var(--color-elevation);
+  margin-bottom: var(--spacing-10);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  position: relative;
+  border-radius: var(--border-radius);
+
+  textarea {
+    width: 80%;
+    height: 96px;
+    resize: none;
+    border: 0;
+    padding: var(--spacing-20);
+    background-color: var(--color-elevation);
+    font-size: var(--font-size-large);
+    font-weight: bold;
+
+    &:focus {
+      border: 0;
+      outline: 0;
+    }
+  }
+  .actions {
+    position: absolute;
+    top: 0;
+    right: var(--spacing-30);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .move-card-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+
+      button:not(:last-child) {
+        margin-bottom: var(--spacing-20);
+      }
+    }
+  }
+}
+
+.note-selected {
+  //border: 4px solid blue;
+}
+
+@keyframes animateIn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes wobbleAnim {
+  from {
+    transform: rotate(-10deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(10deg);
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+  .container {
+    padding: 0 var(--spacing-10);
+  }
+}
