@@ -73,7 +73,7 @@ export const NoteCard = ({
         onBlur={onBlur}
       ></textarea>
       <div className="actions">
-        <div className="move-card-actions">
+        <div className="move-note-actions">
           {!hideMoveUpButton && (
             <button className="icon-button" onClick={() => moveNoteUp(note)}>
               <ArrowUpSVG width={svgSize} height={svgSize} fill="white" />

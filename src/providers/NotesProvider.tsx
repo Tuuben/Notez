@@ -76,6 +76,8 @@ const NotesProvider = ({ children }: Props<any>) => {
 
     const { action, payload } = socketData;
 
+    console.log('payload', payload);
+
     if (action === 'INIT_WS_CONNECTION') {
       if (!notes || !notes.length) {
         setNotes(payload);
@@ -85,14 +87,14 @@ const NotesProvider = ({ children }: Props<any>) => {
         if (updatedNotes) {
           // If has locally updated notes merge with incoming
           _mergeNotes(updatedNotes, payload);
-          _pushLocalUpdatedCardsToWS();
+          _pushLocalUpdatedNotesToWS();
         } else {
           // Just merge incoming with existing
           _mergeNotes(payload);
         }
 
-        _pushLocalAddedCardsToWS();
-        _pushLocalDeletedCardsToWS();
+        _pushLocalAddedNotesToWS();
+        _pushLocalDeletedNotesToWS();
       }
     }
 
@@ -130,11 +132,11 @@ const NotesProvider = ({ children }: Props<any>) => {
     }
   };
 
-  const _pushLocalDeletedCardsToWS = () => {
-    const deletedCards: Note[] = getLocalStorageItems('DELETED_NOTES');
+  const _pushLocalDeletedNotesToWS = () => {
+    const deletedNotes: Note[] = getLocalStorageItems('DELETED_NOTES');
 
-    if (!!deletedCards) {
-      deletedCards.forEach((note) => {
+    if (!!deletedNotes) {
+      deletedNotes.forEach((note) => {
         sendToSocket('DELETE_NOTE', note);
       });
 
@@ -142,20 +144,20 @@ const NotesProvider = ({ children }: Props<any>) => {
     }
   };
 
-  const _pushLocalAddedCardsToWS = () => {
-    const addedCards: Note[] = getLocalStorageItems('ADDED_NOTES');
-    if (!!addedCards) {
-      addedCards.forEach((note) => {
+  const _pushLocalAddedNotesToWS = () => {
+    const addedNotes: Note[] = getLocalStorageItems('ADDED_NOTES');
+    if (!!addedNotes) {
+      addedNotes.forEach((note) => {
         sendToSocket('ADD_NOTE', note);
       });
       clearLocalStorageItems('ADDED_NOTES');
     }
   };
 
-  const _pushLocalUpdatedCardsToWS = () => {
-    const updatedCards: Note[] = getLocalStorageItems('UPDATED_NOTES');
-    if (!!updatedCards && !!updatedCards.length) {
-      sendToSocket('UPDATE_NOTES', updatedCards);
+  const _pushLocalUpdatedNotesToWS = () => {
+    const updatedNotes: Note[] = getLocalStorageItems('UPDATED_NOTES');
+    if (!!updatedNotes && !!updatedNotes.length) {
+      sendToSocket('UPDATE_NOTES', updatedNotes);
       clearLocalStorageItems('UPDATED_NOTES');
     }
   };
@@ -211,7 +213,7 @@ const NotesProvider = ({ children }: Props<any>) => {
     const oldLocation = note.location;
     const newLocation = sortedNoteList[index - 1].location;
 
-    const currentNoteAtLocation = notes[index - 1];
+    const currentNoteAtLocation = sortedNoteList[index - 1];
     const updatedNotes: Note[] = [];
 
     currentNoteAtLocation.location = oldLocation;
@@ -231,12 +233,12 @@ const NotesProvider = ({ children }: Props<any>) => {
     const sortedNoteList = notes.sort((a, b) =>
       a.location && b.location && a.location < b.location ? 1 : -1
     );
-    const index = sortedNoteList.findIndex((c) => c.id === note.id);
+    const index = sortedNoteList.findIndex((n) => n.id === note.id);
 
     const oldLocation = note.location;
     const newLocation = sortedNoteList[index + 1].location;
 
-    const currentNoteAtLocation = notes[index + 1];
+    const currentNoteAtLocation = sortedNoteList[index + 1];
     const updatedNotes: Note[] = [];
 
     // Update location of note at current position
@@ -256,8 +258,8 @@ const NotesProvider = ({ children }: Props<any>) => {
   };
 
   const deleteNote = (note: any) => {
-    const newCards = notes.filter((c) => c.id !== note.id);
-    setNotes(newCards);
+    const newNotes = notes.filter((c) => c.id !== note.id);
+    setNotes(newNotes);
 
     if (!_wsIsOpen()) {
       setLocalStorageItems('DELETED_NOTES', [note]);
@@ -272,7 +274,7 @@ const NotesProvider = ({ children }: Props<any>) => {
     const sortedNotes = notes.sort((a, b) =>
       a.location && b.location && a.location <= b.location ? 1 : -1
     );
-    const lastLocation = sortedNotes[0] ? sortedNotes[0].location : 1;
+    const lastLocation = sortedNotes[0] ? sortedNotes[0].location : 0;
     const location = !!lastLocation ? lastLocation + 10 : 0;
 
     const note: Note = {
@@ -280,8 +282,6 @@ const NotesProvider = ({ children }: Props<any>) => {
       content: 'Write something clever...',
       id,
     };
-
-    console.log('added note ', note);
 
     setNotes([...notes, note]);
 
