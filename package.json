@@ -37,7 +37,7 @@
     "react-scripts": "3.4.1",
     "rimraf": "^3.0.2",
     "source-map-explorer": "^2.4.2",
-    "stylelint": "^13.3.3",
+    "stylelint": "^15.10.1",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-scss": "^3.17.1",
